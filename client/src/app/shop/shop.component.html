@@ -1,0 +1,51 @@
+<div class="container">
+  <div class="row">
+    <section class="col-3">
+      <h5 class="text-warning ml-3">Sort</h5>
+      <select class="custom-select mb-3" (change)="onSortSelected($event.target.value)">
+        <option *ngFor="let sort of sortOptions" [value]="sort.value">
+          {{sort.name}}
+        </option>
+      </select>
+      <h5 class="text-warning ml-3">Brands</h5>
+      <ul class="list-group my-3" *ngFor="let brand of brands">
+        <li class="list-group-item" aria-current="true" [class.active]="brand.id === shopParams.brandId"
+          [value]="brand.id" (click)="onBrandSelected(brand.id)">
+          {{brand.name}}
+        </li>
+      </ul>
+      <h5 class="text-warning ml-3">Types</h5>
+      <ul class="list-group my-3" *ngFor="let type of types">
+        <li class="list-group-item" aria-current="true" [class.active]="type.id === shopParams.typeId" [value]="type.id"
+          (click)="onTypeSelected(type.id)">
+          {{type.name}}
+        </li>
+      </ul>
+    </section>
+    <section class="col-9">
+      <div class="d-flex justify-content-between align-items-center pb-2">
+
+        <app-paging-header [totalCount]="totalCount" [pageSize]="this.shopParams.pageSize"
+          [pageNumber]="this.shopParams.pageNumber">
+        </app-paging-header>
+
+        <div class="form-inline mt-2">
+          <input class="form-control mr-2" (keyup.enter)="onSearch()" #search style="width: 300px" placeholder="Search"
+            type="text" />
+          <button class="btn btn-outline-primary my-2" (click)="onSearch()">Search</button>
+          <button class="btn btn-outline-primary ml-2 my-2" (click)="onReset()">Reset</button>
+        </div>
+      </div>
+      <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+        <div class="col-4 mb-4" *ngFor="let product of products">
+          <app-product-item [product]="product"></app-product-item>
+        </div>
+      </div>
+      <div class="d-flex justify-content-center" *ngIf="this.totalCount && this.totalCount > 0">
+        <app-pager [pageSize]="shopParams.pageSize" [totalCount]="totalCount" (pageChanged)="onPageChanged($event)">
+        </app-pager>
+      </div>
+    </section>
+
+  </div>
+</div>
